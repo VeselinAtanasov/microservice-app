@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  frontend:
+    container_name: frontend
+    networks:
+      - react-express
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    build: ./frontend
+  backend: 
+    container_name: backend
+    networks:
+      - express-mongo
+      - react-express
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+    build: ./backend
+  mongo:
+    networks:
+      - express-mongo
+    volumes:
+      - ./data:/data/db
+    container_name: mongo
+    image: mongo
+
+networks:
+  react-express:
+    external: true
+  express-mongo:
+    external: true
+# volumes:
+#   mongo-db-data:
